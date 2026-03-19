@@ -7,7 +7,7 @@ const cors = require("cors");
 const connectDB = require("./utils/db");
 connectDB();
 
-const { AuthRoutes } = require("./routes");
+const { AuthRoutes, RequestRoutes } = require("./routes");
 
 const app = express();
 
@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use("/api/auth", AuthRoutes);
+app.use("/api/requests", RequestRoutes);
 
 app.get("/api/hello", (req, res) => {
     res.status(200).json({ success: true, message: "Hello from the backend!" });

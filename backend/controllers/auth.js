@@ -1,7 +1,6 @@
 const { UserService } = require("../services");
-const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { cleanIndexes } = require("../models/user");
+const { jwtSign } = require("../utils/jwt");
+const { hashPassword, comparePassword } = require("../utils/bcrypt");
 
 const signUp = async (req, res) => {
     try {
@@ -98,32 +97,6 @@ const logIn = async (req, res) => {
             code: "INTERNAL_SERVER_ERROR",
             message: error.message,
         });
-    }
-};
-
-const hashPassword = async (password) => {
-    try {
-        const salt = await bcryptjs.genSalt(10);
-        const hashedPassword = await bcryptjs.hash(password, salt);
-        return hashedPassword;
-    } catch (error) {
-        throw new Error("Error hashing password: " + error.message);
-    }
-};
-
-const comparePassword = async (password, hash) => {
-    try {
-        return await bcryptjs.compare(password, hash);
-    } catch (error) {
-        throw new Error("Error comparing password: " + error.message);
-    }
-};
-
-const jwtSign = (payload) => {
-    try {
-        return jwt.sign(payload, process.env.JWT_SECRET);
-    } catch (error) {
-        throw new Error("Error signing JWT: " + error.message);
     }
 };
 

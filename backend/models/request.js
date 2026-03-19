@@ -12,7 +12,7 @@ const requestSchema = new mongoose.Schema(
             required: true,
         },
         extractedInfo: {
-            type: String,
+            type: Object,
         },
         response: {
             venue_name: String,
