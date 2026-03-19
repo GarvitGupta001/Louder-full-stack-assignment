@@ -36,9 +36,9 @@ const getRequestById = async (requestId) => {
     }
 };
 
-const getRequestByUserId = async (userId) => {
+const getRequestsByUserId = async (userId) => {
     try {
-        const requests = await RequestModel.find({ userId });
+        const requests = await RequestModel.find({ userId }, null, { sort: { createdAt: -1 } });
         return requests;
     } catch (error) {
         throw new Error('Error fetching requests: ' + error.message);
@@ -49,5 +49,5 @@ module.exports = {
     createRequest,
     updateRequest,
     getRequestById,
-    getRequestByUserId,
+    getRequestsByUserId,
 };

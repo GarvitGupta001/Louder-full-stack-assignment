@@ -38,6 +38,76 @@ const AIsearch = async (req, res) => {
     }
 };
 
+const getRequestHistory = async (req, res) => {
+    try {
+        const { userId } = req;
+        const requests = await RequestService.getRequestsByUserId(userId);
+        const cleanedRequests = requests.map((req) => ({
+            id: req._id,
+            prompt: req.prompt,
+            createdAt: req.createdAt,
+        }));
+
+        res.status(200).json({
+            success: true,
+            code: "REQUEST_HISTORY_SUCCESS",
+            message: "Request history retrieved successfully",
+            data: cleanedRequests,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error retrieving request history",
+            error: error.message,
+        });
+    }
+};
+
+const getRequestById = async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const request = await RequestService.getRequestById(requestId);
+        if (!request) {
+            return res.status(404).json({
+                success: false,
+                code: "REQUEST_NOT_FOUND",
+                message: "Request not found",
+            });
+        }
+
+        if (request.userId.toString() !== req.userId) {
+            return res.status(403).json({
+                success: false,
+                code: "FORBIDDEN",
+                message: "You do not have permission to access this request",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            code: "REQUEST_DETAIL_SUCCESS",
+            message: "Request details retrieved successfully",
+            data: {
+                id: request._id,
+                prompt: request.prompt,
+                extractedInfo: request.extractedInfo,
+                response: request.response,
+                createdAt: request.createdAt,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error retrieving request details",
+            error: error.message,
+        });
+    }
+};
+
 module.exports = {
     AIsearch,
+    getRequestHistory,
+    getRequestById,
 };

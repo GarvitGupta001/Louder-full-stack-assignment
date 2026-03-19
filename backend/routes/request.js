@@ -8,4 +8,16 @@ router.post(
     RequestController.AIsearch,
 );
 
+router.get(
+    "/history",
+    AuthMiddleware.verifyToken,
+    RequestController.getRequestHistory,
+);
+
+router.get(
+    "/:requestId",
+    AuthMiddleware.verifyToken,
+    RequestController.getRequestById,
+);
+
 module.exports = router;
