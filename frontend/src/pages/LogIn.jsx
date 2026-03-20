@@ -188,17 +188,7 @@ export default function LoginPage() {
                                 />
                             </Field>
 
-                            <Field
-                                label="Password"
-                                right={
-                                    <button
-                                        type="button"
-                                        className="text-[10px] tracking-[0.2em] uppercase text-[#e8a045]/50 hover:text-[#e8a045] transition-colors"
-                                    >
-                                        Forgot?
-                                    </button>
-                                }
-                            >
+                            <Field label="Password">
                                 <input
                                     type="password"
                                     name="password"
@@ -283,7 +273,7 @@ export default function LoginPage() {
     );
 }
 
-function Field({ label, right, children }) {
+function Field({ label, children }) {
     return (
         <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
@@ -293,7 +283,6 @@ function Field({ label, right, children }) {
                 >
                     {label}
                 </label>
-                {right}
             </div>
             {children}
         </div>
