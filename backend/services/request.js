@@ -45,9 +45,21 @@ const getRequestsByUserId = async (userId) => {
     }
 };
 
+const deleteRequest = async (requestId) => {
+    try {
+        const result = await RequestModel.deleteOne({ _id: requestId });
+        if (result.deletedCount === 0) {
+            throw new Error('Request not found');
+        }
+    } catch (error) {
+        throw new Error('Error deleting request: ' + error.message);
+    }
+};
+
 module.exports = {
     createRequest,
     updateRequest,
     getRequestById,
     getRequestsByUserId,
+    deleteRequest,
 };

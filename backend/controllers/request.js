@@ -106,8 +106,48 @@ const getRequestById = async (req, res) => {
     }
 };
 
+const deleteRequest = async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const Request = await RequestService.getRequestById(requestId);
+
+        if (!Request) {
+            return res.status(404).json({
+                success: false,
+                code: "REQUEST_NOT_FOUND",
+                message: "Request not found",
+            });
+        }
+
+        if (Request.userId.toString() !== req.userId) {
+            return res.status(403).json({
+                success: false,
+                code: "FORBIDDEN",
+                message: "You do not have permission to delete this request",
+            });
+        }
+
+        await RequestService.deleteRequest(requestId);
+
+        res.status(200).json({
+            success: true,
+            code: "REQUEST_DELETE_SUCCESS",
+            message: "Request deleted successfully",
+            data: { id: requestId },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error deleting request",
+            error: error.message,
+        });
+    }
+};
+
 module.exports = {
     AIsearch,
     getRequestHistory,
     getRequestById,
+    deleteRequest,
 };

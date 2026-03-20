@@ -31,24 +31,42 @@ function AILoader() {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center py-14 gap-5">
-            <div className="relative w-14 h-14">
-                <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-indigo-400 border-b-indigo-400 animate-spin" />
-                <div className="absolute inset-2.25 rounded-full border-2 border-transparent border-l-violet-500 border-r-violet-500 animate-spin [animation-duration:1.4s] [animation-direction:reverse]" />
-                <div className="absolute inset-4.5 rounded-full bg-indigo-400/20 animate-pulse" />
+        <div className="flex flex-col items-center justify-center flex-1 gap-8 py-20">
+            {/* Orbital loader */}
+            <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border border-white/6" />
+                <div
+                    className="absolute inset-0 rounded-full border-t border-r border-[#e8a045]/80 animate-spin"
+                    style={{ animationDuration: "1.2s" }}
+                />
+                <div
+                    className="absolute inset-[5px] rounded-full border-b border-[#e8a045]/30 animate-spin"
+                    style={{
+                        animationDuration: "2s",
+                        animationDirection: "reverse",
+                    }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-[#e8a045]/60 animate-pulse" />
+                </div>
             </div>
-            <div className="flex flex-col items-center gap-1.5">
-                <p className="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">
-                    ◈ Eventis AI
+            <div className="flex flex-col items-center gap-2">
+                <p className="text-[9px] font-semibold tracking-[0.4em] text-[#e8a045] uppercase">
+                    ◈ Louder AI
                 </p>
-                <p className="text-sm text-white/50">{steps[step]}</p>
+                <p
+                    className="text-[15px] text-white/40 font-light transition-all duration-500"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    {steps[step]}
+                </p>
             </div>
             <div className="flex gap-1.5">
                 {[0, 1, 2].map((i) => (
                     <span
                         key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
-                        style={{ animationDelay: `${i * 0.15}s` }}
+                        className="w-[5px] h-[5px] rounded-full bg-[#e8a045]/40 animate-bounce"
+                        style={{ animationDelay: `${i * 0.18}s` }}
                     />
                 ))}
             </div>
@@ -56,76 +74,78 @@ function AILoader() {
     );
 }
 
-// ─── Venue Response Card ──────────────────────────────────────────────────────
-// Renders the AI response: { venue_name, location, estimated_cost, justification }
-function VenueCard({ prompt, response, onDismiss, timestamp }) {
+// ─── Venue Card ───────────────────────────────────────────────────────────────
+function VenueCard({ prompt, response, onDismiss }) {
     return (
-        <div className="border border-indigo-500/25 bg-indigo-500/6 rounded-2xl overflow-hidden mb-8 animate-[fadeUp_0.4s_cubic-bezier(0.16,1,0.3,1)]">
-            {/* Card header */}
-            <div className="flex items-start justify-between gap-4 px-6 pt-6 pb-5">
-                <div className="flex-1 min-w-0">
-                    <span className="inline-block text-[10px] font-bold tracking-[0.15em] text-indigo-400 bg-indigo-500/15 px-2.5 py-1 rounded-full mb-3 uppercase">
-                        ✦ AI Proposal
+        <div className="animate-[fadeUp_0.5s_cubic-bezier(0.16,1,0.3,1)] w-full">
+            {/* Label row */}
+            <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                    <div className="w-px h-4 bg-[#e8a045]" />
+                    <span
+                        className="text-[9px] font-semibold tracking-[0.35em] text-[#e8a045] uppercase"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                        AI Proposal
                     </span>
-                    <h3 className="font-serif text-xl font-bold text-slate-100 tracking-tight leading-snug">
-                        {response.venue_name}
-                    </h3>
-                    {prompt && (
-                        <p className="text-xs text-white/30 italic mt-1.5 truncate">
-                            "{prompt}"
-                        </p>
-                    )}
                 </div>
                 {onDismiss && (
                     <button
                         onClick={onDismiss}
-                        className="text-white/20 hover:text-white/60 transition-colors text-base shrink-0 mt-1"
+                        className="text-[10px] tracking-[0.2em] uppercase text-white/20 hover:text-white/50 transition-colors border border-white/[0.07] hover:border-white/15 px-2.5 py-1 rounded"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
                     >
-                        ✕
+                        Dismiss
                     </button>
                 )}
             </div>
 
-            {/* Location + Cost */}
-            <div className="grid grid-cols-2 gap-3 px-6 pb-5">
-                <div className="bg-white/4 border border-white/[0.07] rounded-xl p-4">
-                    <p className="text-[10.5px] text-white/35 font-medium tracking-wide mb-1.5">
-                        📍 LOCATION
-                    </p>
-                    <p className="text-sm font-semibold text-slate-100 leading-snug">
-                        {response.location}
-                    </p>
-                </div>
-                <div className="bg-white/4 border border-white/[0.07] rounded-xl p-4">
-                    <p className="text-[10.5px] text-white/35 font-medium tracking-wide mb-1.5">
-                        💰 ESTIMATED COST
-                    </p>
-                    <p className="text-base font-bold text-green-400">
-                        {response.estimated_cost}
-                    </p>
-                </div>
+            {/* Venue name — big editorial */}
+            <h2
+                className="text-[clamp(32px,5vw,52px)] text-white leading-[0.92] mb-2"
+                style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    letterSpacing: "0.03em",
+                }}
+            >
+                {response.venue_name}
+            </h2>
+            {prompt && (
+                <p
+                    className="text-[12px] text-white/22 italic mb-8 font-light break-words"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    "{prompt}"
+                </p>
+            )}
+
+            {/* Horizontal rule */}
+            <div className="h-px bg-white/[0.06] mb-8" />
+
+            {/* Info grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <InfoBlock label="Location" value={response.location} />
+                <InfoBlock
+                    label="Estimated Cost"
+                    value={response.estimated_cost}
+                    accent
+                />
             </div>
 
             {/* Justification */}
             {response.justification && (
-                <div className="mx-6 mb-5 bg-white/3 border border-white/6 rounded-xl p-4">
-                    <p className="text-[10.5px] text-white/35 font-medium tracking-wide mb-2">
-                        🤖 AI JUSTIFICATION
+                <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-5">
+                    <p
+                        className="text-[9px] font-semibold tracking-[0.32em] text-white/22 uppercase mb-3"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                        Why this venue
                     </p>
-                    <p className="text-sm text-white/60 leading-[1.75]">
+                    <p
+                        className="text-[14px] text-white/45 leading-[1.85] font-light"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
                         {response.justification}
-                    </p>
-                </div>
-            )}
-
-            {/* Footer */}
-            {timestamp && (
-                <div className="px-6 pb-4 border-t border-white/5 pt-3.5">
-                    <p className="text-[11px] text-white/20">
-                        {new Date(timestamp).toLocaleString("en-IN", {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                        })}
                     </p>
                 </div>
             )}
@@ -133,9 +153,200 @@ function VenueCard({ prompt, response, onDismiss, timestamp }) {
     );
 }
 
-// ─── History Item ─────────────────────────────────────────────────────────────
-// Lightweight row. On click → fetches full detail and expands.
-function HistoryItem({
+function InfoBlock({ label, value, accent }) {
+    return (
+        <div className="border border-white/[0.06] rounded-lg p-5 bg-white/[0.018]">
+            <p
+                className="text-[9px] font-semibold tracking-[0.32em] text-white/22 uppercase mb-2"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+                {label}
+            </p>
+            <p
+                className={`text-[17px] font-medium leading-snug ${accent ? "text-[#e8a045]" : "text-white/80"}`}
+                style={{
+                    fontFamily: accent
+                        ? "'Bebas Neue', sans-serif"
+                        : "'DM Sans', sans-serif",
+                    letterSpacing: accent ? "0.04em" : "normal",
+                    fontSize: accent ? "22px" : "15px",
+                }}
+            >
+                {value}
+            </p>
+        </div>
+    );
+}
+
+// ─── Empty / Welcome state ────────────────────────────────────────────────────
+function EmptyState({ onExample }) {
+    const examples = [
+        "A trek in India with ₹50,000 budget",
+        "Outdoor wedding for 150 guests in Goa",
+        "Tech conference for 200 people in Bangalore",
+    ];
+
+    return (
+        <div className="flex flex-col justify-center flex-1 py-12">
+            {/* Big faint wordmark */}
+            <p
+                className="text-[clamp(48px,10vw,96px)] text-white/[0.03] leading-none select-none mb-12 -ml-1"
+                style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    letterSpacing: "0.02em",
+                }}
+            >
+                LOUDER
+            </p>
+
+            <div className="max-w-lg">
+                <p
+                    className="text-[9px] font-semibold tracking-[0.35em] text-[#e8a045] uppercase mb-4"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    Get started
+                </p>
+                <p
+                    className="text-[15px] text-white/30 leading-[1.8] font-light mb-8"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    Describe your event above — budget, location, headcount,
+                    vibe. The AI will find the ideal venue and explain every
+                    choice.
+                </p>
+
+                <p
+                    className="text-[9px] font-semibold tracking-[0.28em] text-white/18 uppercase mb-3"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    Try an example
+                </p>
+                <div className="flex flex-col gap-2">
+                    {examples.map((ex, i) => (
+                        <button
+                            key={ex}
+                            onClick={() => onExample(ex)}
+                            className="group flex items-center gap-4 text-left border border-white/[0.055] hover:border-[#e8a045]/25 bg-white/[0.018] hover:bg-[#e8a045]/[0.025] rounded-lg px-4 py-3.5 transition-all duration-150"
+                        >
+                            <span
+                                className="text-[10px] text-white/15 group-hover:text-[#e8a045]/50 tabular-nums shrink-0 font-medium transition-colors"
+                                style={{
+                                    fontFamily: "'Bebas Neue', sans-serif",
+                                    letterSpacing: "0.06em",
+                                }}
+                            >
+                                0{i + 1}
+                            </span>
+                            <span
+                                className="text-[13px] text-white/35 group-hover:text-white/60 transition-colors font-light"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                {ex}
+                            </span>
+                            <span className="ml-auto text-white/12 group-hover:text-[#e8a045]/40 transition-colors text-sm">
+                                →
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── History Panel ────────────────────────────────────────────────────────────
+function HistoryPanel({
+    history,
+    historyLoading,
+    selectedId,
+    detailLoadingId,
+    detailCache,
+    detailError,
+    onSelect,
+    onDelete,
+}) {
+    return (
+        <div className="flex flex-col h-full">
+            {/* Panel header */}
+            <div className="flex items-center justify-between px-5 py-5 border-b border-white/[0.06] shrink-0">
+                <p
+                    className="text-[11px] font-semibold tracking-[0.28em] text-white/50 uppercase"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                    History
+                </p>
+                <span
+                    className="text-[13px] text-white/30 tabular-nums"
+                    style={{
+                        fontFamily: "'Bebas Neue', sans-serif",
+                        letterSpacing: "0.08em",
+                    }}
+                >
+                    {history.length}
+                </span>
+            </div>
+
+            {/* Scrollable list */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide px-3 py-4">
+                {historyLoading && (
+                    <div className="flex flex-col gap-2 px-1">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div
+                                key={i}
+                                className="h-[72px] rounded-lg"
+                                style={{
+                                    background:
+                                        "linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.038) 50%, rgba(255,255,255,0.02) 75%)",
+                                    backgroundSize: "200% 100%",
+                                    animation: "shimmer 1.6s infinite",
+                                    animationDelay: `${i * 0.1}s`,
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {!historyLoading && history.length === 0 && (
+                    <div className="flex flex-col items-center justify-center h-48 gap-3">
+                        <span
+                            className="text-[32px] text-white/8"
+                            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                        >
+                            ◇
+                        </span>
+                        <p
+                            className="text-[13px] text-white/25 text-center font-light"
+                            style={{ fontFamily: "'DM Sans', sans-serif" }}
+                        >
+                            No history yet
+                        </p>
+                    </div>
+                )}
+
+                {!historyLoading && history.length > 0 && (
+                    <div className="flex flex-col gap-1.5">
+                        {history.map((item) => (
+                            <HistoryRow
+                                key={item.id}
+                                item={item}
+                                isSelected={selectedId === item.id}
+                                isLoadingDetail={detailLoadingId === item.id}
+                                detail={detailCache[item.id] || null}
+                                detailError={
+                                    selectedId === item.id ? detailError : null
+                                }
+                                onSelect={onSelect}
+                                onDelete={onDelete}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function HistoryRow({
     item,
     isSelected,
     isLoadingDetail,
@@ -144,115 +355,147 @@ function HistoryItem({
     onSelect,
     onDelete,
 }) {
-    // item = { id, prompt, createdAt }
-    // detail = full object from cache (may be null if not fetched yet)
-
     return (
         <div
-            className={`border rounded-xl overflow-hidden transition-all duration-200 ${
+            className={`rounded-lg overflow-hidden transition-all duration-200 ${
                 isSelected
-                    ? "border-indigo-500/30 bg-indigo-500/4"
-                    : "border-white/[0.07] bg-white/2.5 hover:border-white/13 hover:bg-white/4"
+                    ? "bg-[#e8a045]/[0.06] border border-[#e8a045]/15"
+                    : "border border-transparent hover:border-white/[0.06] hover:bg-white/[0.025]"
             }`}
         >
-            {/* Row header — always visible */}
-            <div
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer"
+            <button
+                className="w-full flex items-start gap-3 px-4 py-4 text-left"
                 onClick={() => onSelect(item.id)}
             >
+                {/* Indicator dot */}
+                <span
+                    className={`w-1.5 h-1.5 rounded-full mt-[7px] shrink-0 transition-colors ${isSelected ? "bg-[#e8a045]" : "bg-white/20"}`}
+                />
                 <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-200 truncate">
+                    <p
+                        className="text-[14px] font-medium text-white/75 break-words whitespace-normal leading-snug"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
                         {item.prompt}
                     </p>
-                    <p className="text-[11px] text-white/25 mt-0.5">
-                        {new Date(item.createdAt).toLocaleString("en-IN", {
-                            dateStyle: "medium",
-                            timeStyle: "short",
+                    <p
+                        className="text-[12px] text-white/30 mt-1.5 font-light"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                        {new Date(item.createdAt).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
                         })}
                     </p>
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
-                    {isLoadingDetail && (
-                        <span className="w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin" />
-                    )}
+                {isLoadingDetail ? (
+                    <span className="w-3 h-3 border border-[#e8a045]/30 border-t-[#e8a045] rounded-full animate-spin mt-1.5 shrink-0" />
+                ) : (
                     <span
-                        className={`text-white/25 text-lg transition-transform duration-200 ${isSelected ? "rotate-90" : ""}`}
+                        className={`text-white/20 text-sm mt-1 shrink-0 transition-transform duration-200 ${isSelected ? "rotate-90" : ""}`}
                     >
                         ›
                     </span>
-                </div>
-            </div>
+                )}
+            </button>
 
-            {/* Expanded detail panel */}
+            {/* Expanded detail */}
             {isSelected && (
-                <div className="border-t border-white/6">
-                    {/* Loading state */}
+                <div className="border-t border-white/[0.05] px-4 pt-4 pb-4">
                     {isLoadingDetail && (
-                        <div className="flex items-center gap-3 px-5 py-5 text-sm text-white/40">
-                            <span className="w-4 h-4 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin shrink-0" />
-                            Fetching full details…
-                        </div>
+                        <p
+                            className="text-[13px] text-white/30 font-light py-2"
+                            style={{ fontFamily: "'DM Sans', sans-serif" }}
+                        >
+                            Loading…
+                        </p>
                     )}
-
-                    {/* Error state */}
                     {!isLoadingDetail && detailError && (
-                        <div className="px-5 py-4 text-sm text-red-400 flex items-center gap-2">
-                            <span>⚠</span> {detailError}
-                        </div>
+                        <p
+                            className="text-[13px] text-red-400/60 py-2"
+                            style={{ fontFamily: "'DM Sans', sans-serif" }}
+                        >
+                            ⚠ {detailError}
+                        </p>
                     )}
-
-                    {/* Detail loaded */}
                     {!isLoadingDetail && detail && (
-                        <div className="px-5 pt-5 pb-4">
-                            {/* Venue name */}
-                            <div className="mb-4">
-                                <p className="text-[10.5px] text-white/30 font-medium tracking-wide mb-1">
-                                    🏔 VENUE
+                        <div className="flex flex-col gap-3">
+                            <div>
+                                <p
+                                    className="text-[10px] tracking-[0.25em] text-white/28 uppercase mb-1.5"
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    Venue
                                 </p>
-                                <p className="text-base font-bold text-slate-100 font-serif">
+                                <p
+                                    className="text-[18px] text-white/80 font-semibold leading-tight"
+                                    style={{
+                                        fontFamily: "'Bebas Neue', sans-serif",
+                                        letterSpacing: "0.04em",
+                                    }}
+                                >
                                     {detail.response?.venue_name}
                                 </p>
                             </div>
-
-                            {/* Location + Cost */}
-                            <div className="grid grid-cols-2 gap-2.5 mb-4">
-                                <div className="bg-white/4 border border-white/[0.07] rounded-xl p-3.5">
-                                    <p className="text-[10px] text-white/30 font-medium mb-1">
-                                        📍 LOCATION
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="bg-white/[0.03] rounded-lg p-3">
+                                    <p
+                                        className="text-[9px] tracking-widest text-white/28 uppercase mb-1.5"
+                                        style={{
+                                            fontFamily: "'DM Sans', sans-serif",
+                                        }}
+                                    >
+                                        Location
                                     </p>
-                                    <p className="text-sm font-semibold text-slate-100 leading-snug">
+                                    <p
+                                        className="text-[13px] text-white/65 leading-snug"
+                                        style={{
+                                            fontFamily: "'DM Sans', sans-serif",
+                                        }}
+                                    >
                                         {detail.response?.location}
                                     </p>
                                 </div>
-                                <div className="bg-white/4 border border-white/[0.07] rounded-xl p-3.5">
-                                    <p className="text-[10px] text-white/30 font-medium mb-1">
-                                        💰 COST
+                                <div className="bg-white/[0.03] rounded-lg p-3">
+                                    <p
+                                        className="text-[9px] tracking-widest text-white/28 uppercase mb-1.5"
+                                        style={{
+                                            fontFamily: "'DM Sans', sans-serif",
+                                        }}
+                                    >
+                                        Cost
                                     </p>
-                                    <p className="text-sm font-bold text-green-400">
+                                    <p
+                                        className="text-[15px] text-[#e8a045] font-semibold"
+                                        style={{
+                                            fontFamily:
+                                                "'Bebas Neue', sans-serif",
+                                            letterSpacing: "0.04em",
+                                        }}
+                                    >
                                         {detail.response?.estimated_cost}
                                     </p>
                                 </div>
                             </div>
-
-                            {/* Justification */}
                             {detail.response?.justification && (
-                                <div className="bg-white/3 border border-white/5 rounded-xl p-4 mb-4">
-                                    <p className="text-[10px] text-white/30 font-medium mb-2">
-                                        🤖 JUSTIFICATION
-                                    </p>
-                                    <p className="text-sm text-white/55 leading-[1.75]">
-                                        {detail.response.justification}
-                                    </p>
-                                </div>
+                                <p
+                                    className="text-[13px] text-white/40 leading-[1.7] font-light"
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    {detail.response.justification}
+                                </p>
                             )}
-
-                            {/* Delete */}
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onDelete(item.id);
                                 }}
-                                className="text-xs bg-red-500/10 border border-red-500/20 text-red-400 px-3.5 py-1.5 rounded-lg hover:bg-red-500/20 transition-colors"
+                                className="self-start text-[10px] tracking-[0.18em] uppercase text-red-400/40 hover:text-red-400/80 border border-red-900/25 hover:border-red-900/50 px-3 py-1.5 rounded transition-all"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
                             >
                                 Delete
                             </button>
@@ -282,11 +525,11 @@ export default function DashboardPage() {
     } = useSelector((s) => s.requests);
 
     const [prompt, setPrompt] = useState("");
+    const [historyOpen, setHistoryOpen] = useState(false); // mobile toggle
 
     useEffect(() => {
         dispatch(fetchHistory());
     }, [dispatch]);
-
     useEffect(() => {
         console.log(current);
     }, [current]);
@@ -307,10 +550,8 @@ export default function DashboardPage() {
 
     const handleSelectHistory = (id) => {
         dispatch(setSelectedId(id));
-        // Only fetch if not already cached and not currently loading
-        if (!detailCache[id] && detailLoadingId !== id) {
+        if (!detailCache[id] && detailLoadingId !== id)
             dispatch(fetchRequestDetail(id));
-        }
     };
 
     const handleLogout = () => {
@@ -318,77 +559,192 @@ export default function DashboardPage() {
         navigate("/login", { replace: true });
     };
 
-    const examples = [
-        "A trek in India with ₹50,000 budget",
-        "Outdoor wedding for 150 guests in Goa",
-        "Tech conference for 200 people in Bangalore",
-    ];
+    const handleExample = (ex) => setPrompt(ex);
 
     return (
-        <div className="min-h-screen bg-[#080b12] text-slate-200">
-            {/* ── Header ── */}
-            <header className="flex items-center justify-between px-6 lg:px-12 py-5 border-b border-white/6 bg-white/2">
-                {/* Logo */}
-                <div className="flex items-center gap-2 font-bold text-white">
-                    <span className="text-indigo-400 text-lg">◈</span>
-                    <span>Louder</span>
-                </div>
+        <>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"
+                rel="stylesheet"
+            />
 
-                {/* User */}
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-bold text-white">
-                            {user?.name?.[0]?.toUpperCase() || "U"}
-                        </div>
-                        <div className="hidden sm:block">
-                            <p className="text-xs font-semibold text-slate-200">
-                                {user?.name}
-                            </p>
-                            <p className="text-[10px] text-white/30">
-                                {user?.email}
-                            </p>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleLogout}
-                        className="text-xs text-white/40 hover:text-red-400 transition-colors"
-                    >
-                        Sign out
-                    </button>
-                </div>
-            </header>
-            {/* ── Main ── */}
-            <main className="px-6 lg:px-16 xl:px-24 py-10 w-full">
-                {/* Header */}
-                <div className="flex justify-between items-start mb-10">
-                    <div>
-                        <h1 className="font-serif text-3xl font-bold text-slate-100 tracking-tight">
-                            Event Planner
-                        </h1>
-                        <p className="text-sm text-white/35 mt-1">
-                            Describe your event, let AI handle the rest
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-3.5 py-1.5 shrink-0">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_6px_#4ade80] animate-pulse" />
-                        <span className="text-xs text-green-400 font-medium">
-                            AI Ready
+            {/* ── Full-height app shell ── */}
+            <div className="h-screen bg-[#0a0a0b] flex overflow-hidden">
+                {/* ════════════════════════════════
+                    LEFT SIDEBAR
+                ════════════════════════════════ */}
+                <aside className="hidden md:flex flex-col w-[64px] lg:w-[200px] shrink-0 border-r border-white/[0.055] bg-[#0a0a0b] z-20">
+                    {/* Logo */}
+                    <div className="flex items-center gap-3 px-4 lg:px-5 py-5 border-b border-white/[0.055]">
+                        <span
+                            className="text-[#e8a045] shrink-0"
+                            style={{
+                                fontFamily: "'Bebas Neue', sans-serif",
+                                fontSize: "18px",
+                                letterSpacing: "0.06em",
+                            }}
+                        >
+                            ◈
+                        </span>
+                        <span
+                            className="hidden lg:block text-white text-[11px] font-medium tracking-[0.22em] uppercase"
+                            style={{ fontFamily: "'DM Sans', sans-serif" }}
+                        >
+                            Louder
                         </span>
                     </div>
-                </div>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
-                        {/* ── Prompt Input ── */}
-                        <section className="mb-8">
-                            <form onSubmit={handleSubmit}>
-                                <div className="flex items-start bg-white/5 border border-white/12 rounded-2xl px-5 py-4 focus-within:border-indigo-400/70 focus-within:bg-indigo-500/3 transition-colors duration-200">
-                                    <span className="text-indigo-400 text-lg mt-0.5 shrink-0 mr-3">
-                                        ◈
-                                    </span>
+
+                    {/* Nav */}
+                    <nav className="flex-1 px-2 lg:px-3 py-4 flex flex-col gap-1">
+                        {/* Active: Planner */}
+                        <div className="flex items-center gap-3 px-2 lg:px-3 py-2.5 rounded-lg bg-[#e8a045]/[0.07] border border-[#e8a045]/10 cursor-default">
+                            <svg
+                                className="w-4 h-4 text-[#e8a045] shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.5}
+                                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+                                />
+                            </svg>
+                            <span
+                                className="hidden lg:block text-[11px] font-medium text-[#e8a045] tracking-[0.12em] uppercase"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                Planner
+                            </span>
+                        </div>
+                    </nav>
+
+                    {/* User + Logout */}
+                    <div className="border-t border-white/[0.055] px-2 lg:px-3 py-4 flex flex-col gap-2">
+                        <div className="flex items-center gap-3 px-2 py-2">
+                            <div className="w-7 h-7 rounded-md bg-[#e8a045]/12 border border-[#e8a045]/18 flex items-center justify-center text-[11px] font-semibold text-[#e8a045] shrink-0">
+                                {user?.name?.[0]?.toUpperCase() || "U"}
+                            </div>
+                            <div className="hidden lg:block min-w-0">
+                                <p
+                                    className="text-[11px] font-medium text-white/60 truncate"
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    {user?.name}
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.03] transition-colors group"
+                        >
+                            <svg
+                                className="w-4 h-4 text-white/20 group-hover:text-red-400/60 shrink-0 transition-colors"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.5}
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                                />
+                            </svg>
+                            <span
+                                className="hidden lg:block text-[10px] tracking-[0.15em] uppercase text-white/20 group-hover:text-red-400/60 transition-colors"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                Sign out
+                            </span>
+                        </button>
+                    </div>
+                </aside>
+
+                {/* ════════════════════════════════
+                    CENTER: WORKSPACE
+                ════════════════════════════════ */}
+                <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                    {/* Mobile header */}
+                    <header className="md:hidden flex items-center justify-between px-4 py-4 border-b border-white/[0.055] shrink-0">
+                        <div className="flex items-center gap-2">
+                            <span
+                                className="text-[#e8a045]"
+                                style={{
+                                    fontFamily: "'Bebas Neue', sans-serif",
+                                    fontSize: "16px",
+                                }}
+                            >
+                                ◈
+                            </span>
+                            <span
+                                className="text-white text-[10px] font-medium tracking-[0.22em] uppercase"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                Louder
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => setHistoryOpen((v) => !v)}
+                                className={`text-[10px] tracking-[0.2em] uppercase border px-3 py-1.5 rounded transition-all ${historyOpen ? "border-[#e8a045]/20 text-[#e8a045]/70 bg-[#e8a045]/[0.05]" : "border-white/[0.07] text-white/30"}`}
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                History
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                className="text-[10px] tracking-[0.2em] uppercase text-white/20 hover:text-red-400/60 transition-colors"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                            >
+                                Out
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* Workspace content */}
+                    <div className="flex-1 overflow-y-auto">
+                        <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10 py-8 lg:py-10 flex flex-col min-h-full">
+                            {/* Top label */}
+                            <div className="mb-8 lg:mb-10">
+                                <p
+                                    className="text-[9px] font-semibold tracking-[0.38em] text-[#e8a045] uppercase mb-1"
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    Event Planner
+                                </p>
+                                <h1
+                                    className="text-[28px] sm:text-[36px] text-white leading-none"
+                                    style={{
+                                        fontFamily: "'Bebas Neue', sans-serif",
+                                        letterSpacing: "0.035em",
+                                    }}
+                                >
+                                    What are you planning?
+                                </h1>
+                            </div>
+
+                            {/* ── Prompt input ── */}
+                            <form
+                                onSubmit={handleSubmit}
+                                className="mb-8 lg:mb-10"
+                            >
+                                <div className="relative border border-white/[0.07] rounded-xl bg-white/[0.025] focus-within:border-[#e8a045]/30 focus-within:bg-[#e8a045]/[0.018] transition-all duration-200 overflow-hidden">
+                                    {/* Top amber accent */}
+                                    <div className="h-px bg-gradient-to-r from-[#e8a045]/0 via-[#e8a045]/0 to-transparent transition-all duration-300 focus-within:from-[#e8a045]/40" />
+
                                     <textarea
-                                        className="flex-1 bg-transparent outline-none text-[15px] text-slate-100 placeholder-white/25 resize-none leading-relaxed min-h-15"
-                                        placeholder="Describe your event… e.g. 'A trek in India with ₹50,000 budget'"
+                                        className="w-full bg-transparent outline-none text-[15px] text-white/75 placeholder-white/15 resize-none leading-relaxed font-light px-5 pt-5 pb-4"
+                                        style={{
+                                            fontFamily: "'DM Sans', sans-serif",
+                                            minHeight: "100px",
+                                        }}
+                                        placeholder="Describe your event — budget, location, headcount, vibe…"
                                         value={prompt}
                                         onChange={(e) =>
                                             setPrompt(e.target.value)
@@ -397,154 +753,144 @@ export default function DashboardPage() {
                                         rows={3}
                                         disabled={loading}
                                     />
-                                    <button
-                                        type="submit"
-                                        disabled={!prompt.trim() || loading}
-                                        className="ml-3 self-end px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-px active:translate-y-0 shrink-0"
-                                    >
-                                        {loading ? (
-                                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin block" />
-                                        ) : (
-                                            "Plan →"
-                                        )}
-                                    </button>
-                                </div>
-                                <p className="text-[11px] text-white/20 mt-2 pl-1">
-                                    Enter to submit · Shift+Enter for new line
-                                </p>
-                            </form>
 
-                            {/* Example chips */}
-                            {!loading && !current && history.length === 0 && (
-                                <div className="mt-5">
-                                    <p className="text-[11px] text-white/25 mb-2.5">
-                                        Try an example
-                                    </p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {examples.map((ex) => (
-                                            <button
-                                                key={ex}
-                                                onClick={() => setPrompt(ex)}
-                                                className="text-xs bg-white/4 border border-white/8 text-white/40 hover:border-indigo-400/50 hover:text-indigo-400 hover:bg-indigo-500/[0.07] px-3.5 py-1.5 rounded-full transition-all duration-150"
-                                            >
-                                                {ex}
-                                            </button>
-                                        ))}
+                                    {/* Bottom bar */}
+                                    <div className="flex items-center justify-between px-4 py-3 border-t border-white/[0.05]">
+                                        <p
+                                            className="text-[10px] text-white/12 font-light"
+                                            style={{
+                                                fontFamily:
+                                                    "'DM Sans', sans-serif",
+                                            }}
+                                        >
+                                            Enter to submit · Shift+Enter for
+                                            new line
+                                        </p>
+                                        <button
+                                            type="submit"
+                                            disabled={!prompt.trim() || loading}
+                                            className="flex items-center gap-2.5 px-4 py-2 bg-[#e8a045] hover:bg-[#d4913c] disabled:opacity-25 disabled:cursor-not-allowed rounded-lg text-[10px] font-semibold tracking-[0.15em] uppercase text-[#0a0a0b] transition-all duration-150 hover:-translate-y-px active:translate-y-0"
+                                            style={{
+                                                fontFamily:
+                                                    "'DM Sans', sans-serif",
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <span className="w-3 h-3 border border-black/20 border-t-black/60 rounded-full animate-spin" />
+                                            ) : (
+                                                <>
+                                                    Plan{" "}
+                                                    <span className="opacity-60">
+                                                        →
+                                                    </span>
+                                                </>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
-                            )}
-                        </section>
+                            </form>
 
-                        {/* ── Submit Error ── */}
-                        {error && !loading && (
-                            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6 text-sm text-red-300">
-                                <span>⚠</span> {error}
-                            </div>
-                        )}
-
-                        {/* ── AI Loading ── */}
-                        {loading && <AILoader />}
-
-                        {/* ── Current Result ── */}
-                        {current && !loading && (
-                            <VenueCard
-                                prompt={current.prompt}
-                                response={current.response}
-                                onDismiss={() => dispatch(clearCurrent())}
-                            />
-                        )}
-                    </div>
-
-                    <div className="lg:col-span-1">
-                        {/* ── History ── */}
-                        <section className="sticky top-24">
-                            <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-base font-semibold text-slate-100">
-                                    Planning History
-                                </h2>
-                                <span className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full">
-                                    {history.length}{" "}
-                                    {history.length === 1
-                                        ? "request"
-                                        : "requests"}
-                                </span>
-                            </div>
-
-                            {/* History loading skeletons */}
-                            {historyLoading && (
-                                <div className="flex flex-col gap-2.5">
-                                    {[1, 2, 3].map((i) => (
-                                        <div
-                                            key={i}
-                                            className="h-16.5 rounded-xl"
-                                            style={{
-                                                background:
-                                                    "linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.04) 75%)",
-                                                backgroundSize: "200% 100%",
-                                                animation:
-                                                    "shimmer 1.5s infinite",
-                                            }}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Empty state */}
-                            {!historyLoading && history.length === 0 && (
-                                <div className="flex flex-col items-center py-14 gap-3 border border-dashed border-white/8 rounded-2xl">
-                                    <span className="text-4xl text-white/10">
-                                        ◇
+                            {/* ── Error ── */}
+                            {error && !loading && (
+                                <div
+                                    className="flex items-center gap-3 border border-red-900/35 bg-red-950/15 rounded-lg px-4 py-3 mb-8 text-[13px] text-red-300/60 font-light"
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                    }}
+                                >
+                                    <span className="text-red-500/60 text-[10px] font-semibold tracking-widest uppercase shrink-0">
+                                        Err
                                     </span>
-                                    <p className="text-sm font-semibold text-white/30">
-                                        No events planned yet
-                                    </p>
-                                    <p className="text-xs text-white/20">
-                                        Your planning history will appear here
-                                    </p>
+                                    {error}
                                 </div>
                             )}
 
-                            {/* History list */}
-                            {!historyLoading && history.length > 0 && (
-                                <div className="flex flex-col gap-2">
-                                    {history.map((item) => (
-                                        <HistoryItem
-                                            key={item.id}
-                                            item={item}
-                                            isSelected={selectedId === item.id}
-                                            isLoadingDetail={
-                                                detailLoadingId === item.id
-                                            }
-                                            detail={
-                                                detailCache[item.id] || null
-                                            }
-                                            detailError={
-                                                selectedId === item.id
-                                                    ? detailError
-                                                    : null
-                                            }
-                                            onSelect={handleSelectHistory}
-                                            onDelete={(id) =>
-                                                dispatch(deleteRequest(id))
-                                            }
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </section>
+                            {/* ── AI Loading / Result / Empty ── */}
+                            <div className="flex flex-col flex-1">
+                                {loading && <AILoader />}
+
+                                {!loading && current && (
+                                    <VenueCard
+                                        prompt={current.prompt}
+                                        response={current.response}
+                                        onDismiss={() =>
+                                            dispatch(clearCurrent())
+                                        }
+                                    />
+                                )}
+
+                                {!loading && !current && (
+                                    <EmptyState onExample={handleExample} />
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </main>
+                </main>
+
+                {/* ════════════════════════════════
+                    RIGHT: HISTORY PANEL
+                    — always visible on lg+
+                    — slide-over on mobile (toggle)
+                ════════════════════════════════ */}
+
+                {/* Desktop history sidebar */}
+                <aside className="hidden lg:flex flex-col w-[320px] xl:w-[360px] shrink-0 border-l border-white/[0.055] bg-[#0a0a0b]">
+                    <HistoryPanel
+                        history={history}
+                        historyLoading={historyLoading}
+                        selectedId={selectedId}
+                        detailLoadingId={detailLoadingId}
+                        detailCache={detailCache}
+                        detailError={detailError}
+                        onSelect={handleSelectHistory}
+                        onDelete={(id) => dispatch(deleteRequest(id))}
+                    />
+                </aside>
+
+                {/* Mobile history drawer (overlay) */}
+                {historyOpen && (
+                    <div className="lg:hidden fixed inset-0 z-40 flex">
+                        {/* Backdrop */}
+                        <div
+                            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                            onClick={() => setHistoryOpen(false)}
+                        />
+                        {/* Drawer */}
+                        <div className="relative ml-auto w-[82%] max-w-[320px] h-full bg-[#0f0f11] border-l border-white/[0.06] flex flex-col animate-[slideIn_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+                            <HistoryPanel
+                                history={history}
+                                historyLoading={historyLoading}
+                                selectedId={selectedId}
+                                detailLoadingId={detailLoadingId}
+                                detailCache={detailCache}
+                                detailError={detailError}
+                                onSelect={(id) => {
+                                    handleSelectHistory(id);
+                                }}
+                                onDelete={(id) => dispatch(deleteRequest(id))}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
 
             <style>{`
+        * { box-sizing: border-box; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(14px); }
+          from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes shimmer {
           to { background-position: -200% 0; }
         }
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to   { transform: translateX(0); opacity: 1; }
+        }
       `}</style>
-        </div>
+        </>
     );
 }

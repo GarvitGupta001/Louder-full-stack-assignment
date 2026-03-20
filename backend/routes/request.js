@@ -20,4 +20,10 @@ router.get(
     RequestController.getRequestById,
 );
 
+router.delete(
+    "/:requestId",
+    AuthMiddleware.verifyToken,
+    RequestController.deleteRequest,
+);
+
 module.exports = router;
