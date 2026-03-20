@@ -1,6 +1,4 @@
 # Louder Full Stack Assignment
-
-A full-stack AI-powered event planning application. Describe your event in plain language and get instant venue recommendations, cost estimates, and detailed justifications.
 ## Live Link
 [View Live Application](https://louder-full-stack-assignment.vercel.app/)
 
