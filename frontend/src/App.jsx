@@ -1,18 +1,35 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "./store/slices/authSlice";
+import LoginPage from "./pages/LogIn";
+import SignupPage from "./pages/SignUp";
+import DashboardPage from "./pages/Dashboard";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { useEffect } from "react";
 
-function App() {
-    const [count, setCount] = useState(0);
+export default function App() {
+    const dispatch = useDispatch();
+    const { isAuthenticated } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            dispatch(fetchCurrentUser());
+        }
+    }, [dispatch, isAuthenticated]);
 
     return (
-        <>
-            <h1 className="text-3xl font-bold absolute top-1/2 left-1/2 -translate-1/2">
-                Louder Full Stack Assignment
-            </h1>
-        </>
+        <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+
+            {/* Protected routes */}
+            <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
+
+            {/* Default redirect */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
     );
 }
-
-export default App;

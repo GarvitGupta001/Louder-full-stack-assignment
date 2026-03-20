@@ -89,7 +89,43 @@ const logIn = async (req, res) => {
             success: true,
             code: "LOGIN_SUCCESS",
             message: "Login successful",
-            data: { token },
+            data: {
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                },
+                token,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: error.message,
+        });
+    }
+};
+
+const fetchUser = async (req, res) => {
+    try {
+        const { userId } = req;
+        const user = await UserService.getUserById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                code: "USER_NOT_FOUND",
+                message: "User not found",
+            });
+        }
+
+        const { passwordHash, __v, ...cleanUser } = user.toObject();
+
+        res.status(200).json({
+            success: true,
+            code: "USER_FETCH_SUCCESS",
+            message: "User data retrieved successfully",
+            data: cleanUser,
         });
     } catch (error) {
         res.status(500).json({
@@ -103,4 +139,5 @@ const logIn = async (req, res) => {
 module.exports = {
     signUp,
     logIn,
+    fetchUser,
 };

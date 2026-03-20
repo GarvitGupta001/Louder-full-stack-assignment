@@ -26,7 +26,7 @@ const AIsearch = async (req, res) => {
             success: true,
             code: "AI_SEARCH_SUCCESS",
             message: "AI search processed successfully",
-            data: searchResults,
+            data: { prompt, response: searchResults },
         });
     } catch (error) {
         res.status(500).json({
