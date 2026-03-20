@@ -569,7 +569,7 @@ export default function DashboardPage() {
             />
 
             {/* ── Full-height app shell ── */}
-            <div className="h-screen bg-[#0a0a0b] flex overflow-hidden">
+            <div className="h-dvh bg-[#0a0a0b] flex overflow-hidden">
                 {/* ════════════════════════════════
                     LEFT SIDEBAR
                 ════════════════════════════════ */}

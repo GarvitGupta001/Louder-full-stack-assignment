@@ -34,7 +34,7 @@ export default function LoginPage() {
                 rel="stylesheet"
             />
             <div
-                className="min-h-screen bg-[#0a0a0b] flex overflow-hidden"
+                className="min-h-dvh bg-[#0a0a0b] flex overflow-hidden"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
                 {/* ── Left panel: typographic statement ── */}
